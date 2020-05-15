@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "lib": ["es6", "dom"],
+    "noImplicitAny": true,
+    "noImplicitThis": false,
+    "outFile": "build/jira_lite.user.js",
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+  },
+  "include": [
+    "user_script.ts",
+    "src/style.ts",
+    "src/types.d.ts",
+    "src/common.ts",
+    "src/comments.ts",
+    "src/menu.ts",
+    "src/description.ts",
+    "src/link_issue.ts",
+    "src/assign.ts",
+    "src/advanced_search.ts",
+    "src/main.ts"
+  ]
+}
