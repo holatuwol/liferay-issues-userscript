@@ -8,23 +8,31 @@ function updateTicket() {
   enableShowMoreLinks();
 }
 
+function isMatchesPathName(partialPathName : string) : boolean {
+  return pathName.indexOf('/secure/' + partialPathName + '!') == 0 ||
+    pathName === '/secure/' + partialPathName + '.jspa';
+}
+
 var pathName = document.location.pathname;
 
 if (pathName.indexOf('/browse/') == 0) {
   updateTicket();
 }
-else if ((pathName.indexOf('/secure/AssignIssue!') == 0) || (pathName === '/secure/AssignIssue.jspa')) {
+else if (isMatchesPathName('AssignIssue')) {
   addAssigneeInput();
 }
-else if (pathName.indexOf('/secure/CreateIssue!') == 0 || (pathName === '/secure/CreateIssue.jspa')) {
+else if (isMatchesPathName('CreateIssue')) {
   makeCreateIssueUsable();
 }
-else if (pathName.indexOf('/secure/LinkJiraIssue!') == 0) {
+else if (isMatchesPathName('EditIssue')) {
+  enableToggleTabs();
+}
+else if (isMatchesPathName('LinkJiraIssue')) {
   addIssueKeySelect();
 }
 else if (pathName.indexOf('/issues/') == 0) {
   addAdvancedSearch();
 }
-else if (pathName.indexOf('/secure/QuickSearch.jspa') == 0) {
+else if (isMatchesPathName('QuickSearch')) {
   addAdvancedSearch();
 }
