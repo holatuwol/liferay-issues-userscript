@@ -5,6 +5,7 @@ html body {
   overflow-y: auto;
 }
 
+#assign-to-me-trigger,
 #show-more-links {
   visibility: hidden;
 }
