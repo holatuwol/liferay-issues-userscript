@@ -1,29 +1,30 @@
+function updateTicket() {
+  if (!document.querySelector('#activitymodule .aui-tabs')) {
+    return;
+  }
+
+  addComments();
+  updateTicketActions();
+  enableShowMoreLinks();
+}
+
 var pathName = document.location.pathname;
 
 if (pathName.indexOf('/browse/') == 0) {
-  if (!document.querySelector('#activitymodule .aui-tabs')) {
-    addComments();
-    updateTicketActions();
-    enableShowMoreLinks();
-  }
+  updateTicket();
 }
-else if ((pathName.indexOf('/secure/AssignIssue!') == 0) || (pathName.indexOf('/secure/AssignIssue.jspa') == 0)) {
-  if (!document.getElementById('assignee-field')) {
-    addAssigneeInput();
-  }
+else if ((pathName.indexOf('/secure/AssignIssue!') == 0) || (pathName === '/secure/AssignIssue.jspa')) {
+  addAssigneeInput();
+}
+else if (pathName.indexOf('/secure/CreateIssue!') == 0 || (pathName === '/secure/CreateIssue.jspa')) {
+  makeCreateIssueUsable();
 }
 else if (pathName.indexOf('/secure/LinkJiraIssue!') == 0) {
-  if (!document.getElementById('jira-issue-keys-textarea')) {
-    addIssueKeySelect();
-  }
+  addIssueKeySelect();
 }
 else if (pathName.indexOf('/issues/') == 0) {
-  if (!document.getElementById('advanced-search')) {
-    addAdvancedSearch();
-  }
+  addAdvancedSearch();
 }
 else if (pathName.indexOf('/secure/QuickSearch.jspa') == 0) {
-  if (!document.getElementById('advanced-search')) {
-    addAdvancedSearch();
-  }
+  addAdvancedSearch();
 }

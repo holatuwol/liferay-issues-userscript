@@ -1,4 +1,8 @@
 function addAdvancedSearch() : void {
+  if (!document.getElementById('advanced-search')) {
+    return;
+  }
+
   var navigatorSearchElement = <HTMLFormElement> document.querySelector('.aui.navigator-search');
   navigatorSearchElement.classList.add('query-component', 'generic-styled');
 

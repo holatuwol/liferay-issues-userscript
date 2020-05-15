@@ -18,6 +18,7 @@
     "src/link_issue.ts",
     "src/assign.ts",
     "src/advanced_search.ts",
+    "src/create_issue.ts",
     "src/main.ts"
   ]
 }

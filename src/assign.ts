@@ -1,4 +1,8 @@
 function addAssigneeInput() : void {
+  if (!document.getElementById('assignee-field')) {
+    return;
+  }
+
   var oldAssigneeElement = <HTMLSelectElement> document.getElementById('assignee');
   var oldAssignee = oldAssigneeElement.options[oldAssigneeElement.selectedIndex].value;
 

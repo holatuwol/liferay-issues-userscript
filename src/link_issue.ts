@@ -1,4 +1,8 @@
 function addIssueKeySelect() : void {
+  if (!document.getElementById('jira-issue-keys-textarea')) {
+    return;
+  }
+
   var issueKeysLabel = <HTMLLabelElement> document.querySelector('label[for="jira-issue-keys"]');
 
   var parentElement = <HTMLElement> issueKeysLabel.parentElement;

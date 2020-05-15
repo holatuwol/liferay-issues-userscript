@@ -11,3 +11,38 @@ function getCurrentUser() : string | null {
 
   return fullNameElement.getAttribute('data-username');
 }
+
+function toggleTab(e : MouseEvent) : void {
+  var tabElements = document.querySelectorAll('.tabs-menu li');
+  var tabContentElements = document.querySelectorAll('.tabs-pane');
+
+  for (var i = 0; i < tabElements.length; i++) {
+    tabElements[i].classList.remove('active-tab');
+  }
+
+  var targetElement = <HTMLLIElement> e.currentTarget;
+  targetElement.classList.add('active-tab');
+
+  for (var i = 0; i < tabContentElements.length; i++) {
+    tabContentElements[i].classList.remove('active-pane');
+  }
+
+  var linkElement = <HTMLAnchorElement> targetElement.querySelector('a');
+
+  var href = linkElement.getAttribute('href')
+  if (href && href.charAt(0) == '#') {
+    var newActivePane = <HTMLDivElement> document.querySelector(href);
+    newActivePane.classList.add('active-pane')
+  }
+
+  e.stopPropagation();
+  e.preventDefault();
+}
+
+function enableToggleTabs() : void {
+  var tabElements = document.querySelectorAll('.tabs-menu li');
+
+  for (var i = 0; i < tabElements.length; i++) {
+    tabElements[i].addEventListener('click', toggleTab);
+  }
+}
