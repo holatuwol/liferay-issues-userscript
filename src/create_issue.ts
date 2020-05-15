@@ -4,21 +4,33 @@ function updateProjectKey(
   issueTypeElement : HTMLSelectElement
 ) : void {
 
+  var issueTypeOptions = issueTypeElement.options;
+
+  for (var i = issueTypeElement.options.length - 1; i >= 0; i--) {
+    issueTypeElement.options[i].remove();
+  }
+
   var projectKey = projectKeyElement.value;
 
   var xhr = new XMLHttpRequest();
 
   xhr.addEventListener('load', function () {
-    var project = JSON.parse(this.responseText).projects[0];
+    var projects = JSON.parse(this.responseText).projects;
+    var project = null;
+
+    for (var i = 0; i < projects.length; i++) {
+      if (projects[i].key == projectKey) {
+        project = projects[i];
+      }
+    }
+
+    if (!project) {
+      return;
+    }
+
     projectElement.value = project.id;
 
     var issuetypes = project.issuetypes;
-
-    var issueTypeOptions = issueTypeElement.options;
-
-    for (var i = issueTypeElement.options.length - 1; i >= 0; i--) {
-      issueTypeElement.options[i].remove();
-    }
 
     for (var i = 0; i < issuetypes.length; i++) {
       var optionElement = document.createElement('option');
@@ -48,9 +60,12 @@ function makeProjectSelectUsable() : void {
   var parentElement = <HTMLElement> oldIssueTypeElement.parentElement;
   parentElement.replaceChild(newIssueTypeElement, oldIssueTypeElement);
 
-  var projectKeyListener = updateProjectKey.bind(
-    null, projectElement, projectKeyElement, newIssueTypeElement);
+  var projectKeyListener = _.debounce(
+      updateProjectKey.bind(
+        null, projectElement, projectKeyElement, newIssueTypeElement),
+        200);
 
+  projectKeyElement.addEventListener('keyup', projectKeyListener);
   projectKeyElement.addEventListener('change', projectKeyListener);
 
   parentElement = <HTMLElement> projectElement.parentElement;
