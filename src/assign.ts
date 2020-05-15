@@ -1,5 +1,5 @@
 function addAssigneeInput() : void {
-  if (!document.getElementById('assignee-field')) {
+  if (document.getElementById('assignee-field')) {
     return;
   }
 

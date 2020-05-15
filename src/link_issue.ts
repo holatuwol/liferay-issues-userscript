@@ -1,5 +1,5 @@
 function addIssueKeySelect() : void {
-  if (!document.getElementById('jira-issue-keys-textarea')) {
+  if (document.getElementById('jira-issue-keys-textarea')) {
     return;
   }
 

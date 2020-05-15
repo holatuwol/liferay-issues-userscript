@@ -1,5 +1,5 @@
 function updateTicket() {
-  if (!document.querySelector('#activitymodule .aui-tabs')) {
+  if (document.querySelector('#activitymodule .aui-tabs')) {
     return;
   }
 

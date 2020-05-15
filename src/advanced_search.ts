@@ -1,5 +1,5 @@
 function addAdvancedSearch() : void {
-  if (!document.getElementById('advanced-search')) {
+  if (document.getElementById('advanced-search')) {
     return;
   }
 
