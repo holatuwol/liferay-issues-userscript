@@ -1,8 +1,47 @@
+var projectCache: {[s: string] : JIRAProject} = {};
+
+function updateProjectCache(projects : Array<JIRAProject>) : void {
+  for (var i = 0; i < projects.length; i++) {
+    projectCache[projects[i].key] = projects[i];
+  }
+}
+
+function setProject(
+  projectElement : HTMLInputElement,
+  issueTypeElement : HTMLSelectElement,
+  project : JIRAProject | null
+) : void {
+
+  if (!project) {
+    return;
+  }
+
+  projectElement.value = project.id;
+
+  var issuetypes = project.issuetypes;
+
+  for (var i = 0; i < issuetypes.length; i++) {
+    var optionElement = document.createElement('option');
+    optionElement.setAttribute('value', issuetypes[i].id);
+    optionElement.textContent = issuetypes[i].name;
+    issueTypeElement.appendChild(optionElement);
+  }
+}
+
 function updateProjectKey(
   projectElement : HTMLInputElement,
   projectKeyElement : HTMLInputElement,
   issueTypeElement : HTMLSelectElement
 ) : void {
+
+  var oldProjectKey = issueTypeElement.getAttribute('data-project-key');
+  var newProjectKey = projectKeyElement.value;
+
+  if (oldProjectKey == newProjectKey) {
+    return;
+  }
+
+  issueTypeElement.setAttribute('data-project-key', newProjectKey);
 
   var issueTypeOptions = issueTypeElement.options;
 
@@ -10,37 +49,20 @@ function updateProjectKey(
     issueTypeElement.options[i].remove();
   }
 
-  var projectKey = projectKeyElement.value;
+
+  if (newProjectKey in projectCache) {
+    setProject(projectElement, issueTypeElement, projectCache[newProjectKey]);
+    return;
+  }
 
   var xhr = new XMLHttpRequest();
 
   xhr.addEventListener('load', function () {
-    var projects = JSON.parse(this.responseText).projects;
-    var project = null;
-
-    for (var i = 0; i < projects.length; i++) {
-      if (projects[i].key == projectKey) {
-        project = projects[i];
-      }
-    }
-
-    if (!project) {
-      return;
-    }
-
-    projectElement.value = project.id;
-
-    var issuetypes = project.issuetypes;
-
-    for (var i = 0; i < issuetypes.length; i++) {
-      var optionElement = document.createElement('option');
-      optionElement.setAttribute('value', issuetypes[i].id);
-      optionElement.textContent = issuetypes[i].name;
-      issueTypeElement.appendChild(optionElement);
-    }
+    updateProjectCache(JSON.parse(this.responseText).projects);
+    setProject(projectElement, issueTypeElement, projectCache[newProjectKey]);
   });
 
-  var restURL = 'https://issues.liferay.com/rest/api/2/issue/createmeta?projectKeys=' + projectKey + '&fields=projects.issuetypes.fields';
+  var restURL = 'https://issues.liferay.com/rest/api/2/issue/createmeta?projectKeys=' + newProjectKey + '&fields=projects.issuetypes.fields';
   xhr.open('GET', restURL);
   xhr.send();
 }
@@ -61,9 +83,9 @@ function makeProjectSelectUsable() : void {
   parentElement.replaceChild(newIssueTypeElement, oldIssueTypeElement);
 
   var projectKeyListener = _.debounce(
-      updateProjectKey.bind(
-        null, projectElement, projectKeyElement, newIssueTypeElement),
-        200);
+    updateProjectKey.bind(
+      null, projectElement, projectKeyElement, newIssueTypeElement),
+      500);
 
   projectKeyElement.addEventListener('keyup', projectKeyListener);
   projectKeyElement.addEventListener('change', projectKeyListener);
