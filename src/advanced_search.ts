@@ -48,6 +48,7 @@ function addAdvancedSearch() : void {
     var column = activeSortElement ? (activeSortElement.getAttribute('data-id') || 'issuekey') : 'issuekey';
 
     var sortJQL = issueTable['columnSortJql'][column];
+
     var sortColumn = (column == 'issuekey') ? 'key' : column;
 
     var sortColumnAsc = sortColumn + ' ASC';
@@ -56,11 +57,29 @@ function addAdvancedSearch() : void {
     var sortAsc = sortJQL.indexOf(sortColumnAsc);
     var sortDesc = sortJQL.indexOf(sortColumnDesc);
 
-    if (sortAsc != -1) {
-      advancedSearchElement.textContent = sortJQL.substring(0, sortAsc) + sortColumnDesc + sortJQL.substring(sortAsc + sortColumnAsc.length);
+    if (activeSortElement) {
+      if (sortAsc != -1) {
+        advancedSearchElement.textContent = sortJQL.substring(0, sortAsc) + sortColumnDesc + sortJQL.substring(sortAsc + sortColumnAsc.length);
+      }
+      else if (sortDesc != -1) {
+        advancedSearchElement.textContent = sortJQL.substring(0, sortDesc) + sortColumnAsc + sortJQL.substring(sortDesc + sortColumnDesc.length);
+      }
     }
-    else if (sortDesc != -1) {
-      advancedSearchElement.textContent = sortJQL.substring(0, sortDesc) + sortColumnAsc + sortJQL.substring(sortDesc + sortColumnDesc.length);
+    else {
+      if (sortAsc != -1) {
+        sortJQL = sortJQL.substring(0, sortAsc) + sortJQL.substring(sortAsc + sortColumnAsc.length + 1);
+      }
+      else if (sortDesc != -1) {
+        sortJQL = sortJQL.substring(0, sortDesc) + sortJQL.substring(sortDesc + sortColumnDesc.length + 1);
+      }
+
+      sortJQL = sortJQL.trim();
+
+      if (sortJQL.toLowerCase().lastIndexOf('order by') == sortJQL.length - 8) {
+        sortJQL = sortJQL.substring(0, sortJQL.length - 8).trim();
+      }
+
+      advancedSearchElement.textContent = sortJQL;
     }
   }
 
