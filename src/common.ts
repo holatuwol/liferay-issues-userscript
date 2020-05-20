@@ -9,7 +9,7 @@ function getTicketId() : string | null {
 function getCurrentUser() : string | null {
   var fullNameElement = <HTMLElement> document.querySelector('#header-details-user-fullname');
 
-  return fullNameElement.getAttribute('data-username');
+  return fullNameElement ? fullNameElement.getAttribute('data-username') : null;
 }
 
 function toggleTab(e : MouseEvent) : void {

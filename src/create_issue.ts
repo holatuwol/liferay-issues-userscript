@@ -62,7 +62,7 @@ function updateProjectKey(
     setProject(projectElement, issueTypeElement, projectCache[newProjectKey]);
   });
 
-  var restURL = 'https://issues.liferay.com/rest/api/2/issue/createmeta?projectKeys=' + newProjectKey + '&fields=projects.issuetypes.fields';
+  var restURL = 'https://' + document.location.host + '/rest/api/2/issue/createmeta?projectKeys=' + newProjectKey + '&fields=projects.issuetypes.fields';
   xhr.open('GET', restURL);
   xhr.send();
 }
