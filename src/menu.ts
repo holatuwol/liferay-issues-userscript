@@ -1,3 +1,11 @@
+function hideMenus() : void {
+  var visibleMenuElements = document.querySelectorAll('div[resolved][aria-hidden="false"]');
+
+  for (var i = 0; i < visibleMenuElements.length; i++) {
+    visibleMenuElements[i].setAttribute('aria-hidden', 'true');
+  }
+}
+
 function setMenuActions(e : MouseEvent) : void {
   var target = <HTMLAnchorElement> e.currentTarget;
 
@@ -5,11 +13,7 @@ function setMenuActions(e : MouseEvent) : void {
     return;
   }
 
-  var visibleMenuElements = document.querySelectorAll('div[resolved][aria-hidden="false"]');
-
-  for (var i = 0; i < visibleMenuElements.length; i++) {
-    visibleMenuElements[i].setAttribute('aria-hidden', 'true');
-  }
+  hideMenus();
 
   var menuId = target.getAttribute('id');
   var menuContainerElement = <HTMLDivElement> document.getElementById(menuId + '-content');
@@ -84,6 +88,8 @@ function enableMenuActions() : void {
   for (var i = 0; i < navigationMenuItems.length; i++) {
     navigationMenuItems[i].addEventListener('click', setMenuActions);
   }
+
+  document.body.addEventListener('click', hideMenus);
 }
 
 function updateTicketActions() : void {

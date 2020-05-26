@@ -67,7 +67,6 @@ function createAnchorTag(
   }
 
   link.href = href;
-  link.target = '_blank';
 
   return link;
 }
