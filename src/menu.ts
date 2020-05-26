@@ -1,3 +1,91 @@
+function setMenuActions(e : MouseEvent) : void {
+  var target = <HTMLAnchorElement> e.currentTarget;
+
+  if (!target) {
+    return;
+  }
+
+  var visibleMenuElements = document.querySelectorAll('div[resolved][aria-hidden="false"]');
+
+  for (var i = 0; i < visibleMenuElements.length; i++) {
+    visibleMenuElements[i].setAttribute('aria-hidden', 'true');
+  }
+
+  var menuId = target.getAttribute('id');
+  var menuContainerElement = <HTMLDivElement> document.getElementById(menuId + '-content');
+
+  if (menuContainerElement.getAttribute('resolved')) {
+    if (menuContainerElement.getAttribute('aria-hidden')) {
+      menuContainerElement.setAttribute('aria-hidden', 'false');
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    return;
+  }
+
+  var menuURL = 'https://issues.liferay.com/rest/api/1.0/menus/' + menuId + '?inAdminMode=false';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', menuURL);
+  xhr.addEventListener('load', function() {
+    var xml = <Document> this.responseXML;
+    var sections = xml.querySelectorAll('sections');
+
+    for (var i = 0; i < sections.length; i++) {
+      var section = sections[i];
+
+      var id = section.querySelector('id');
+
+      var sectionContainer = document.createElement('div');
+      sectionContainer.classList.add('aui-dropdown2-section');
+
+      var label = section.querySelector('label');
+
+      if (label) {
+        var labelElement = document.createElement('strong');
+        labelElement.textContent = label.textContent;
+        sectionContainer.appendChild(labelElement);
+      }
+
+      var sectionItemsElement = document.createElement('ul');
+      sectionItemsElement.classList.add('aui-list-truncate');
+
+      var items = section.querySelectorAll('items');
+
+      for (var j = 0; j < items.length; j++) {
+        var item = items[j];
+        var itemTitle = (<Element> item.querySelector('title') || item.querySelector('label')).textContent || '';
+        var itemURL = (<Element> item.querySelector('url')).textContent || '';
+
+        var itemElement = document.createElement('li');
+        itemElement.appendChild(createAnchorTag(itemTitle, itemURL));
+        sectionItemsElement.appendChild(itemElement);
+      }
+
+      sectionContainer.appendChild(sectionItemsElement);
+      menuContainerElement.appendChild(sectionContainer);
+    }
+
+    menuContainerElement.setAttribute('resolved', 'true');
+    menuContainerElement.setAttribute('aria-hidden', 'false');
+    menuContainerElement.style.zIndex = '3000';
+  });
+
+  xhr.send(null);
+
+  e.stopPropagation();
+  e.preventDefault();
+}
+
+function enableMenuActions() : void {
+  var navigationMenuItems = document.querySelectorAll('ul.aui-nav > li > a');
+
+  for (var i = 0; i < navigationMenuItems.length; i++) {
+    navigationMenuItems[i].addEventListener('click', setMenuActions);
+  }
+}
+
 function updateTicketActions() : void {
   var operationsContainer = <HTMLElement> document.getElementById('opsbar-opsbar-operations');
 

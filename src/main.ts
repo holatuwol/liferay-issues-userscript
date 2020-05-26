@@ -6,12 +6,15 @@ function updateTicket() {
   addComments();
   updateTicketActions();
   enableShowMoreLinks();
+  addPatcherPortalLinks();
 }
 
 function isMatchesPathName(partialPathName : string) : boolean {
   return pathName.indexOf('/secure/' + partialPathName + '!') == 0 ||
     pathName === '/secure/' + partialPathName + '.jspa';
 }
+
+enableMenuActions();
 
 var pathName = document.location.pathname;
 

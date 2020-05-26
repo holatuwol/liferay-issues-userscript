@@ -46,3 +46,28 @@ function enableToggleTabs() : void {
     tabElements[i].addEventListener('click', toggleTab);
   }
 }
+
+/**
+ * Generate an anchor tag with the specified text, href, and download attributes.
+ * If the download attribute has an extension that looks like it will probably be
+ * served inline, use the downloadBlob function instead.
+ */
+
+function createAnchorTag(
+  text: string,
+  href: string
+) : HTMLAnchorElement {
+
+  var link = <HTMLAnchorElement> document.createElement('a');
+
+  link.textContent = text;
+
+  if (href.indexOf('https://') != 0) {
+    href = 'https://' + document.location.host + href;
+  }
+
+  link.href = href;
+  link.target = '_blank';
+
+  return link;
+}
