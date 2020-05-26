@@ -18,6 +18,18 @@ html body {
 #show-more-links {
   visibility: hidden;
 }
+
+#documentation-web-panel,
+#greenhopper-agile-issue-web-panel,
+#packages-issue-panel,
+#slack-viewissue-panel,
+#issue-panel {
+  display: none;
+}
+
+#activitymodule {
+  width: 90vw;
+}
 `;
 
 document.head.appendChild(styleElement);
