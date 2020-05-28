@@ -1,7 +1,11 @@
-function getTicketId() : string | null {
-  var ticketName = document.location.pathname.substring(document.location.pathname.lastIndexOf('/') + 1);
+function getTicketName() : string | null {
+  var ticketElement = <HTMLElement> document.querySelector('.aui-page-header-main a[data-issue-key]')
 
-  var ticketElement = <HTMLElement> document.querySelector('a[data-issue-key="' + ticketName + '"]');
+  return ticketElement.getAttribute('data-issue-key');
+}
+
+function getTicketId() : string | null {
+  var ticketElement = <HTMLElement> document.querySelector('.aui-page-header-main a[data-issue-key]')
 
   return ticketElement.getAttribute('rel');
 }

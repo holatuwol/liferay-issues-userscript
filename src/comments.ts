@@ -1,20 +1,44 @@
+function getActionLink(
+  comment : JIRAComment,
+  actionName : string,
+  actionTitle : string,
+  actionPath : string
+) : HTMLAnchorElement {
+
+    var anchorNode = createAnchorTag('', actionPath);
+    anchorNode.setAttribute('id', actionName + '_comment_' + comment.id);
+    anchorNode.setAttribute('title', actionTitle);
+    anchorNode.classList.add(actionName + '-comment', 'issue-comment-action');
+
+    var icon = document.createElement('span');
+    icon.classList.add('icon-default', 'aui-icon', 'aui-icon-small', 'aui-iconfont-' + actionName);
+    icon.textContent = actionTitle;
+
+    anchorNode.appendChild(icon);
+
+    return anchorNode;
+}
+
 function getActionLinks(comment : JIRAComment) : HTMLDivElement {
   var actionLinksNode = document.createElement('div');
   actionLinksNode.classList.add('action-links');
 
+  actionLinksNode.appendChild(
+    getActionLink(
+      comment, 'link', 'Permalink',
+      '/browse/' + getTicketName() + '?focusedCommentId=' + comment.id +
+        '&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-' + comment.id));
+
   if (comment.author.key == getCurrentUser()) {
-    var editCommentNode = document.createElement('a');
-    editCommentNode.setAttribute('id', 'edit_comment_' + comment.id);
-    editCommentNode.setAttribute('href', '/secure/EditComment!default.jspa?id=' + getTicketId() + '&commentId=' + comment.id);
-    editCommentNode.setAttribute('title', 'Edit');
-    editCommentNode.classList.add('edit-comment', 'issue-comment-action');
+    actionLinksNode.appendChild(
+      getActionLink(
+        comment, 'edit', 'Edit',
+        '/secure/EditComment!default.jspa?id=' + getTicketId() + '&commentId=' + comment.id));
 
-    var editCommentIcon = document.createElement('span');
-    editCommentIcon.classList.add('icon-default', 'aui-icon', 'aui-icon-small', 'aui-iconfont-edit');
-    editCommentIcon.textContent = 'Edit';
-
-    editCommentNode.appendChild(editCommentIcon);
-    actionLinksNode.appendChild(editCommentNode);
+    actionLinksNode.appendChild(
+      getActionLink(
+        comment, 'delete', 'Delete',
+        '/secure/DeleteComment!default.jspa?id=' + getTicketId() + '&commentId=' + comment.id));
   }
 
   return actionLinksNode;
@@ -116,6 +140,14 @@ function addComments() : void {
     var comments = JSON.parse(this.responseText).comments;
     for (var i = 0; i < comments.length; i++) {
       addComment(comments[i]);
+    }
+
+    if (document.location.hash) {
+      var comment = document.querySelector(document.location.hash);
+
+      if (comment) {
+        comment.scrollIntoView();
+      }
     }
   });
 
