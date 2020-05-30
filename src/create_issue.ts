@@ -105,7 +105,7 @@ function makeSummaryUsable() : void {
   }
 }
 
-function makeCreateIssueUsable() : void {
+function makeCreateEditIssueUsable() : void {
   if (document.getElementById('project')) {
     makeProjectSelectUsable();
   }

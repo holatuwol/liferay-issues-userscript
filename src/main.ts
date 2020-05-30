@@ -31,10 +31,10 @@ else if (isMatchesPathName('AssignIssue')) {
   addAssigneeInput();
 }
 else if (isMatchesPathName('CreateIssue')) {
-  makeCreateIssueUsable();
+  makeCreateEditIssueUsable();
 }
 else if (isMatchesPathName('EditIssue')) {
-  enableToggleTabs();
+  makeCreateEditIssueUsable();
 }
 else if (isMatchesPathName('LinkJiraIssue')) {
   addIssueKeySelect();
