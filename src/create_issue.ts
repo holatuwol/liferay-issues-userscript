@@ -109,7 +109,7 @@ function makeCreateEditIssueUsable() : void {
   if (document.getElementById('project')) {
     makeProjectSelectUsable();
   }
-  if (document.getElementById('summary')) {
+  else {
     makeSummaryUsable();
   }
 }

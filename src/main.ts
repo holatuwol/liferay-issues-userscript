@@ -36,6 +36,9 @@ else if (isMatchesPathName('CreateIssue')) {
 else if (isMatchesPathName('EditIssue')) {
   makeCreateEditIssueUsable();
 }
+else if (isMatchesPathName('CommentAssignIssue')) {
+  makeCreateEditIssueUsable();
+}
 else if (isMatchesPathName('LinkJiraIssue')) {
   addIssueKeySelect();
 }
