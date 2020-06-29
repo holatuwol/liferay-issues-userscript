@@ -117,7 +117,7 @@ function getActionBody(comment : JIRAComment) : HTMLDivElement {
 }
 
 function addComment(comment : JIRAComment) : void {
-  var activityContentNode = <HTMLElement> document.querySelector('#activitymodule .mod-content')
+  var activityContentNode = <HTMLElement> document.querySelector('#activitymodule .mod-content');
 
   var activityCommentNode = document.createElement('div');
   activityCommentNode.setAttribute('id', 'comment-' + comment.id);
@@ -138,8 +138,16 @@ function addComments() : void {
 
   xhr.addEventListener('load', function() {
     var comments = JSON.parse(this.responseText).comments;
-    for (var i = 0; i < comments.length; i++) {
-      addComment(comments[i]);
+
+    if (comments.length == 0) {
+      var activityContentNode = <HTMLElement> document.querySelector('#activitymodule .mod-content');
+
+      activityContentNode.appendChild(document.createTextNode('There are no comments yet on this issue.'));
+    }
+    else {
+      for (var i = 0; i < comments.length; i++) {
+        addComment(comments[i]);
+      }
     }
 
     if (document.location.hash) {
