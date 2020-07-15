@@ -1,8 +1,4 @@
 function updateTicket() : void {
-  if (document.querySelector('#activitymodule .aui-tabs')) {
-    return;
-  }
-
   var sidebar = document.querySelector('.aui-sidebar');
 
   if (sidebar) {
