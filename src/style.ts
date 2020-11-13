@@ -30,6 +30,10 @@ html body {
 #activitymodule {
   width: 90vw;
 }
+
+form.aui:not(.aui-legacy-forms) .checkbox input[type="checkbox"] {
+  position: static;
+}
 `;
 
 document.head.appendChild(styleElement);
