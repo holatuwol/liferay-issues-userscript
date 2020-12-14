@@ -26,6 +26,10 @@ function getProductVersionName(
     return '';
   }
 
+  if (version.indexOf('7.3') == 0) {
+    return '7.3';
+  }
+
   if (version.indexOf('7.2') == 0) {
     return '7.2';
   }
@@ -52,6 +56,10 @@ function getProductVersionName(
 function getProductVersionId(
   version: string
 ) : string {
+
+  if (version == '7.3') {
+    return '175004848';
+  }
 
   if (version == '7.2') {
     return '130051253';
