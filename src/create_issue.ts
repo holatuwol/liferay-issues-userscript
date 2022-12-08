@@ -63,7 +63,12 @@ function updateProjectKey(
   });
 
   var restURL = 'https://' + document.location.host + '/rest/api/2/issue/createmeta?projectKeys=' + newProjectKey + '&fields=projects.issuetypes.fields';
+
   xhr.open('GET', restURL);
+
+  xhr.setRequestHeader('Cache-Control', 'no-cache, no-store, max-age=0');
+  xhr.setRequestHeader('Pragma', 'no-cache');
+
   xhr.send();
 }
 

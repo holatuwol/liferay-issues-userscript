@@ -162,5 +162,9 @@ function addComments() : void {
   var restURL = 'https://' + document.location.host + '/rest/api/2/issue/' + getTicketId() + '/comment?expand=renderedBody';
 
   xhr.open('GET', restURL);
+
+  xhr.setRequestHeader('Cache-Control', 'no-cache, no-store, max-age=0');
+  xhr.setRequestHeader('Pragma', 'no-cache');
+
   xhr.send();
 }

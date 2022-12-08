@@ -31,7 +31,9 @@ function setMenuActions(e : MouseEvent) : void {
   var menuURL = 'https://issues.liferay.com/rest/api/1.0/menus/' + menuId + '?inAdminMode=false';
 
   var xhr = new XMLHttpRequest();
+
   xhr.open('GET', menuURL);
+
   xhr.addEventListener('load', function() {
     var xml = <Document> this.responseXML;
     var sections = xml.querySelectorAll('sections');
@@ -75,6 +77,9 @@ function setMenuActions(e : MouseEvent) : void {
     menuContainerElement.setAttribute('aria-hidden', 'false');
     menuContainerElement.style.zIndex = '3000';
   });
+
+  xhr.setRequestHeader('Cache-Control', 'no-cache, no-store, max-age=0');
+  xhr.setRequestHeader('Pragma', 'no-cache');
 
   xhr.send(null);
 
